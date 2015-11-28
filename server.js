@@ -1,47 +1,63 @@
 var http = require("http"),
-    url  = require("url"),
+    url = require("url"),
     path = require("path"),
-    fs   = require("fs");
+    fs = require("fs");
 
-http.createServer(function (req, res) {
-    var pathname=__dirname+url.parse(req.url).pathname;
-    if (path.extname(pathname)=="") {
-        pathname+="/";
+http.createServer(function(req, res) {
+    var pathname = __dirname + url.parse(req.url).pathname;
+    if (path.extname(pathname) == "") {
+        pathname += "/";
     }
-    if (pathname.charAt(pathname.length-1)=="/"){
-        pathname+="index.html";
+    if (pathname.charAt(pathname.length - 1) == "/") {
+        pathname += "index.html";
     }
 
-    fs.exists(pathname,function(exists){
-        if(exists){
-            switch(path.extname(pathname)){
+    fs.exists(pathname, function(exists) {
+        if (exists) {
+            switch (path.extname(pathname)) {
                 case ".html":
-                    res.writeHead(200, {"Content-Type": "text/html"});
+                    res.writeHead(200, {
+                        "Content-Type": "text/html"
+                    });
                     break;
                 case ".js":
-                    res.writeHead(200, {"Content-Type": "text/javascript"});
+                    res.writeHead(200, {
+                        "Content-Type": "text/javascript"
+                    });
                     break;
                 case ".css":
-                    res.writeHead(200, {"Content-Type": "text/css"});
+                    res.writeHead(200, {
+                        "Content-Type": "text/css"
+                    });
                     break;
                 case ".gif":
-                    res.writeHead(200, {"Content-Type": "image/gif"});
+                    res.writeHead(200, {
+                        "Content-Type": "image/gif"
+                    });
                     break;
                 case ".jpg":
-                    res.writeHead(200, {"Content-Type": "image/jpeg"});
+                    res.writeHead(200, {
+                        "Content-Type": "image/jpeg"
+                    });
                     break;
                 case ".png":
-                    res.writeHead(200, {"Content-Type": "image/png"});
+                    res.writeHead(200, {
+                        "Content-Type": "image/png"
+                    });
                     break;
                 default:
-                    res.writeHead(200, {"Content-Type": "application/octet-stream"});
+                    res.writeHead(200, {
+                        "Content-Type": "application/octet-stream"
+                    });
             }
 
-            fs.readFile(pathname,function (err,data){
+            fs.readFile(pathname, function(err, data) {
                 res.end(data);
             });
         } else {
-            res.writeHead(404, {"Content-Type": "text/html"});
+            res.writeHead(404, {
+                "Content-Type": "text/html"
+            });
             res.end("<h1>404 Not Found</h1>");
         }
     });
