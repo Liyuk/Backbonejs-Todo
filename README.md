@@ -1,4 +1,4 @@
-# rw-Backbonejs-myTodo
+# Backbonejs-Todo
 Backbonejs Todolist rewrite
 
 ###简介
