@@ -1,72 +1,78 @@
 define([
-	'jquery',
-	'underscore',
-	'backbone',
-	'text!templates/todo.html',
-	'models/todo'
+    'jquery',
+    'underscore',
+    'backbone',
+    'text!templates/todo.html',
+    'models/todo'
 ], function(
-	$,
-	_,
-	Backbone,
-	todoTemplate,
-	Todo
+    $,
+    _,
+    Backbone,
+    todoTemplate,
+    Todo
 ) {
-	var TodoView = Backbone.View.extend({
-		tagName: "li",
-		template: _.template(todoTemplate),
-		events: {
-			"click .toggle": "toggle",
-			"dblclick .view": "edit",
-			"click .destroy": "destroy",
-			"keypress .edit": "updateOnEnter",
-			"blur .edit": "close"
-		},
+    /**
+     * 单条todo视图管理
+     */
+    var TodoView = Backbone.View.extend({
 
-		initialize: function() {
-			this.listenTo(this.model, "change", this.render);
-			this.listenTo(this.model, "destroy", this.remove);
-		},
+        tagName: "li",
 
-		render: function() {
-			this.$el.html(this.template(this.model.toJSON()));
-			this.$el.toggleClass('done', this.model.get('done'));
-			this.input = this.$('.edit');
-			return this;
-		},
+        template: _.template(todoTemplate),
 
-		toggle: function() {
-			this.model.toggleDone();
-		},
+        events: {
+            "click .toggle": "toggle",
+            "dblclick .view": "edit",
+            "click .destroy": "destroy",
+            "keypress .edit": "updateOnEnter",
+            "blur .edit": "close"
+        },
 
-		edit: function() {
-			this.$el.addClass("editing");
-			this.input.focus();
-		},
+        initialize: function() {
+            this.listenTo(this.model, "change", this.render);
+            this.listenTo(this.model, "destroy", this.remove);
+        },
 
-		destroy: function() {
-			this.model.destroy();
-		},
+        render: function() {
+            this.$el.html(this.template(this.model.toJSON()));
+            this.$el.toggleClass('done', this.model.get('done'));
+            this.input = this.$('.edit');
+            return this;
+        },
 
-		updateOnEnter: function(e) {
-			if (e.keyCode == 13) {
-				this.close();
-			}
-		},
+        toggle: function() {
+            this.model.toggleDone();
+        },
 
-		close: function() {
-			var value = this.input.val();
-			if (!value) {
-				this.destroy();
-			} else {
-				this.model.save({
-					title: value
-				});
-				this.$el.removeClass("editing")
-			}
-		}
+        edit: function() {
+            this.$el.addClass("editing");
+            this.input.focus();
+        },
 
-	});
+        destroy: function() {
+            this.model.destroy();
+        },
 
-	return TodoView;
+        updateOnEnter: function(e) {
+            if (e.keyCode == 13) {
+                this.close();
+            }
+        },
+
+        close: function() {
+            var value = this.input.val();
+            if (!value) {
+                this.destroy();
+            } else {
+                this.model.save({
+                    title: value
+                });
+                this.$el.removeClass("editing")
+            }
+        }
+
+    });
+
+    return TodoView;
 
 });

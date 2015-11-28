@@ -1,46 +1,53 @@
 define([
-	'jquery',
-	'underscore',
-	'backbone',
-	'text!templates/input.html'
+    'jquery',
+    'underscore',
+    'backbone',
+    'text!templates/input.html'
 ], function(
-	$,
-	_,
-	Backbone,
-	inputTemplate
+    $,
+    _,
+    Backbone,
+    inputTemplate
 ) {
-	var InputView = Backbone.View.extend({
-		tagName: 'header',
-		template: _.template(inputTemplate),
-		events: {
-			"keypress #new-todo" : "createOnEnter"
-		},
+    /**
+     * InputView控制输入框
+     */
+    var InputView = Backbone.View.extend({
 
-		initialize: function() {
+        tagName: 'header',
 
-		},
+        template: _.template(inputTemplate),
 
-		render: function() {
-			this.$el.html(this.template());
-			return this;
-		},
+        events: {
+            "keypress #new-todo": "createOnEnter"
+        },
 
-		createOnEnter: function(e) {
-			this.input = $('#new-todo');
-			if (e.keyCode != 13) 
-				return;
-			value = this.input.val();
-			if (!this.input.val()) 
-				return;
-			value = this.input.val();
-			this.collection.create({
-				title: this.input.val()
-			});
-			this.input.val("");
-		}
+        initialize: function() {},
 
-	});
+        render: function() {
+            this.$el.html(this.template());
+            return this;
+        },
 
-	return InputView;
+        createOnEnter: function(e) {
+            // 判断是否为回车
+            if (e.keyCode != 13) {
+                return;
+            }
+            this.input = $('#new-todo');
+            var value = this.input.val();
+            // 判断是否为空
+            if (!value) {
+                return;
+            }
+            this.collection.create({
+                title: value
+            });
+            this.input.val("");
+        }
+
+    });
+
+    return InputView;
 
 });

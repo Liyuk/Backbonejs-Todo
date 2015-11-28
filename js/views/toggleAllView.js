@@ -1,44 +1,45 @@
 define([
-	'jquery',
-	'underscore',
-	'backbone',
-	'text!templates/toggleAll.html'
+    'jquery',
+    'underscore',
+    'backbone',
+    'text!templates/toggleAll.html'
 ], function(
-	$,
-	_,
-	Backbone,
-	toggleAllTemplate
+    $,
+    _,
+    Backbone,
+    toggleAllTemplate
 ) {
-	var ToggleAllView = Backbone.View.extend({
-		template: _.template(toggleAllTemplate),
-		events: {
-			"click #toggle-all": "toggleAllComplete"
-		},
 
-		initialize: function() {
+    var ToggleAllView = Backbone.View.extend({
 
-		},
+        template: _.template(toggleAllTemplate),
 
-		render: function() {
-			this.$el.html(this.template());
-			var done = this.collection.done().length;
-			var remain = this.collection.remain().length;
-			this.allCheckbox = this.$("#toggle-all")[0];
-			this.allCheckbox.checked != remain;
-			return this;
-		},
+        events: {
+            "click #toggle-all": "toggleAllComplete"
+        },
 
-		toggleAllComplete: function() {
-			var done = this.allCheckbox.checked;
-			this.collection.each(function(todo) {
-				todo.save({
-					done: done
-				});
-			});
-		}
+        initialize: function() {},
 
-	});
+        render: function() {
+            this.$el.html(this.template());
+            var done = this.collection.done().length;
+            var remain = this.collection.remain().length;
+            this.allCheckbox = this.$("#toggle-all")[0];
+            this.allCheckbox.checked != remain;
+            return this;
+        },
 
-	return ToggleAllView;
+        toggleAllComplete: function() {
+            var done = this.allCheckbox.checked;
+            this.collection.each(function(todo) {
+                todo.save({
+                    done: done
+                });
+            });
+        }
+
+    });
+
+    return ToggleAllView;
 
 });
